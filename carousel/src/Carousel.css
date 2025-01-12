@@ -17,3 +17,7 @@
 .bi {
   font-size: 35px
 }
+
+.hidden {
+  display: none; 
+}

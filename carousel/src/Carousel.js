@@ -17,13 +17,35 @@ import Card from "./Card";
  function Carousel({ photos, title }) {
   const [currCardIdx, setCurrCardIdx] = useState(0);
 
+  const [isLeftHidden, setLeftHidden] = useState(true);
+  const [isRightHidden, setRightHidden] = useState(false);
+
   const currCard = photos[currCardIdx];
   const total = photos.length;
 
   //Increments currCardIdx state by 1
   function goForward() {
-    setCurrCardIdx(currCardIdx + 1);
+    setCurrCardIdx((currIdx) => currIdx + 1);
   }
+  
+  function goBackward() {
+    setCurrCardIdx((currIdx) => currIdx - 1);
+  }
+
+  function hideArrow(imageNumber) {
+    if (imageNumber === 0) { 
+      setLeftHidden(true);
+    } else {
+      setLeftHidden(false);
+    }
+  
+    if (imageNumber === total - 1) { 
+      setRightHidden(true);
+    } else {
+      setRightHidden(false);
+    }
+  }
+  
 
   return (
     <div className="Carousel">
@@ -31,7 +53,12 @@ import Card from "./Card";
       <div className="Carousel-main">
         <i
           className="bi bi-arrow-left-circle"
-          onClick={goForward}
+          style={{visibility: isLeftHidden ? "hidden" : "visible"}}
+          onClick={() => {
+            const nextIdx = currCardIdx - 1; 
+            goBackward();
+            hideArrow(nextIdx);
+          }}
         />
         <Card
           caption={currCard.caption}
@@ -41,7 +68,13 @@ import Card from "./Card";
         />
         <i
           className="bi bi-arrow-right-circle"
-          onClick={goForward}
+          style={{visibility: isRightHidden ? "hidden" : "visible"}}
+          onClick={() => {
+            const nextIdx = currCardIdx + 1; 
+            goForward();
+            hideArrow(nextIdx);
+          }}
+          
         />
       </div>
     </div>
